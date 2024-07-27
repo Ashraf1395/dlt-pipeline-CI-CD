@@ -1,0 +1,29 @@
+%python
+yaml
+name: Deploy Notebook to Databricks
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '../notebooks/*'
+
+jobs:
+  deploy-notebook:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Deploy Notebook
+      env:
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      run: |
+        curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+        $DATABRICKS_HOST/api/2.0/workspace/import \
+        -F path="/Shared/stackgenius/dev/" \
+        -F content=../notebooks/stackgenius-dlt-pipeline.sql \
+        -F language=SQL \
+        -F format=SOURCE \
+        -F overwrite=true
