@@ -41,8 +41,6 @@ GROUP BY `date`, tenant_id, actor_alternateId, actor_displayName, actor_type, cl
 ORDER BY published DESC;
 
 
--- COMMAND ----------
-
 CREATE OR REFRESH LIVE TABLE ingestion_metadata_dlt AS
 SELECT
   'okta' as source,
