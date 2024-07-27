@@ -1,5 +1,3 @@
-%python
-yaml
 name: Deploy Notebook to Databricks
 
 on:
@@ -27,3 +25,5 @@ jobs:
         -F language=SQL \
         -F format=SOURCE \
         -F overwrite=true
+
+        
