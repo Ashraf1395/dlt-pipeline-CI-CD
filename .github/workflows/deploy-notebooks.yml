@@ -13,6 +13,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Print Environment Variables
+      run: |
+        echo "Databricks Host: $DATABRICKS_HOST"
+        echo "Databricks Token: $DATABRICKS_TOKEN"
+
     - name: Deploy Notebook
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
@@ -25,5 +30,3 @@ jobs:
         -F language=SQL \
         -F format=SOURCE \
         -F overwrite=true
-
-        
