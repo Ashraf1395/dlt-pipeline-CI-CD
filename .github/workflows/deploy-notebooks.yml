@@ -25,7 +25,7 @@ jobs:
       run: |
         curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
         $DATABRICKS_HOST/api/2.0/workspace/import \
-        -F path="/Workspace/stackgenius/dev/dlt-pipeline.sql" \
+        -F path="/Workspace/stackgenius/dev/dlt-pipeline" \
         -F content=@notebooks/stackgenius-dlt-pipeline.sql \
         -F language=SQL \
         -F format=SOURCE \
