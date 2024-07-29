@@ -1,4 +1,4 @@
-name: Deploy Notebook to Databricks
+name: Deploy Notebooks to Databricks
 
 on:
   push:
@@ -13,20 +13,30 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Print Environment Variables
+    - name: Get Changed Notebooks
+      id: changes
       run: |
-        echo "Databricks Host: $DATABRICKS_HOST"
-        echo "Databricks Token: $DATABRICKS_TOKEN"
+        # Get a list of changed notebooks
+        notebooks=$(git diff --name-only HEAD^ HEAD | grep '^notebooks/')
+        echo "Changed notebooks: $notebooks"
+        echo "::set-output name=notebooks::$notebooks"
 
-    - name: Deploy Notebook
+    - name: Deploy Notebooks
+      if: steps.changes.outputs.notebooks != ''
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       run: |
-        curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
-        $DATABRICKS_HOST/api/2.0/workspace/import \
-        -F path="/Workspace/stackgenius/dev/dlt-pipeline" \
-        -F content=@notebooks/stackgenius-dlt-pipeline.sql \
-        -F language=SQL \
-        -F format=SOURCE \
-        -F overwrite=true
+        IFS=' ' read -r -a notebook_array <<< "${{ steps.changes.outputs.notebooks }}"
+        for notebook in "${notebook_array[@]}"
+        do
+          echo "Deploying $notebook to Databricks"
+          notebook_name=$(basename "$notebook")
+          curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+          $DATABRICKS_HOST/api/2.0/workspace/import \
+          -F path="/Workspace/stackgenius/dev/$notebook_name" \
+          -F content=@$notebook \
+          -F language=SQL \
+          -F format=SOURCE \
+          -F overwrite=true
+        done
