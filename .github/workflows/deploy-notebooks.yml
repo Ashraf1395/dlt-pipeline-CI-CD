@@ -17,7 +17,7 @@ jobs:
       id: changes
       run: |
         # Get a list of changed notebooks
-        notebooks=$(git diff --name-only HEAD^ HEAD | grep '^notebooks/')
+        notebooks=$(git diff-tree --no-commit-id --name-only -r HEAD..origin/master | grep '^notebooks/')
         echo "Changed notebooks: $notebooks"
         echo "::set-output name=notebooks::$notebooks"
 
