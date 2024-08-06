@@ -49,4 +49,5 @@ jobs:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       run: |
-        databricks workspace import_dir notebooks /Workspace/stackgenius_dlt_pipeline/okta_pipeline --overwrite
+        DIRECTORY="/Workspace/stackgenius_dlt_pipeline"
+        databricks workspace import_dir notebooks /Workspace/stackgenius_dlt_pipeline --overwrite
