@@ -10,7 +10,7 @@ FROM cloud_files(
   map('inferschema',"true")
 );
 
--- COMMAND --
+-- COMMAND -
 
 CREATE OR REFRESH MATERIALIZED VIEW okta_gold_dlt AS
 SELECT
