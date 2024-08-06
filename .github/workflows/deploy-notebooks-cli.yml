@@ -32,9 +32,21 @@ jobs:
         $DATABRICKS_TOKEN
         EOF
 
+    - name: Create Directory in Workspace
+      env:
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+      run: |
+        DIRECTORY="/Workspace/stackgenius_dlt_pipeline"
+        if ! databricks workspace ls $DIRECTORY; then
+          databricks workspace mkdirs $DIRECTORY
+        else
+          echo "Directory already exists: $DIRECTORY"
+        fi
+
     - name: Deploy Notebooks
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       run: |
-        databricks workspace import_dir notebooks /Workspace/stackgenius/ --overwrite
+        databricks workspace import_dir notebooks /Workspace/stackgenius_dlt_pipeline/okta_pipeline --overwrite
