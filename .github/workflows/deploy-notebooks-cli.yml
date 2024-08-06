@@ -50,4 +50,4 @@ jobs:
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
       run: |
         DIRECTORY="/Workspace/stackgenius_dlt_pipeline"
-        databricks workspace import_dir notebooks /Workspace/stackgenius_dlt_pipeline --overwrite
+        databricks workspace import_dir notebooks $DIRECTORY --overwrite
