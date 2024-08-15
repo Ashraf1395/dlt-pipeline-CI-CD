@@ -1,32 +1,32 @@
-name: Deploy Notebook to Databricks
+# name: Deploy Notebook to Databricks
 
-on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'notebooks/*'
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - 'notebooks/*'
 
-jobs:
-  deploy-notebook:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+# jobs:
+#   deploy-notebook:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v2
 
-    - name: Print Environment Variables
-      run: |
-        echo "Databricks Host: $DATABRICKS_HOST"
-        echo "Databricks Token: $DATABRICKS_TOKEN"
+#     - name: Print Environment Variables
+#       run: |
+#         echo "Databricks Host: $DATABRICKS_HOST"
+#         echo "Databricks Token: $DATABRICKS_TOKEN"
 
-    - name: Deploy Notebook
-      env:
-        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
-        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      run: |
-        curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
-        $DATABRICKS_HOST/api/2.0/workspace/import \
-        -F path="/Workspace/stackgenius_dlt_pipeline/okta_pipeline" \
-        -F content=@notebooks/stackgenius-okta-dlt-pipeline.sql \
-        -F language=SQL \
-        -F format=SOURCE \
-        -F overwrite=true
+#     - name: Deploy Notebook
+#       env:
+#         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+#         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+#       run: |
+#         curl -n -X POST -H "Authorization: Bearer $DATABRICKS_TOKEN" \
+#         $DATABRICKS_HOST/api/2.0/workspace/import \
+#         -F path="/Workspace/stackgenius_dlt_pipeline/okta_pipeline" \
+#         -F content=@notebooks/stackgenius-okta-dlt-pipeline.sql \
+#         -F language=SQL \
+#         -F format=SOURCE \
+#         -F overwrite=true
