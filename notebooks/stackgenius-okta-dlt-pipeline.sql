@@ -1,20 +1,21 @@
 -- Databricks notebook source
-CREATE OR REFRESH STREAMING LIVE TABLE okta_silver_dlt
+CREATE OR REFRESH STREAMING LIVE TABLE OKTA_SILVER_SYSTEM_LOGS
 COMMENT "Incremental upload of data incoming from okta"
 PARTITIONED BY (date, tenant_id)
 AS
 SELECT *
 FROM cloud_files(
-  '/Volumes/stackgenius/dev/raw_okta_data/okta_raw_json_new/*/*/*.json',
+  '/Volumes/stackgenius/dev/stackgenius-dev/source=OKTA/*/*/*/*.json',
   'json',
   map('inferschema',"true")
 );
 
 -- COMMAND -
 
-CREATE OR REFRESH MATERIALIZED VIEW okta_gold_dlt AS
+CREATE OR REFRESH MATERIALIZED VIEW OKTA_GOLD AS
 SELECT
     `date`::DATE,
+    source,
     tenant_id,
     actor_alternateId,
     actor_displayName,
