@@ -36,7 +36,7 @@ FROM (
         get_json_object(client_geographicalContext, "$.city") AS city,
         get_json_object(client_geographicalContext, "$.country") AS country,
         EXPLODE(FROM_JSON(get_json_object(target, '$'), 'ARRAY<STRUCT<alternateId: STRING, displayName: STRING>>')) AS target_exploded
-    FROM live.okta_silver_dlt
+    FROM live.OKTA_SILVER_SYSTEM_LOGS
 ) AS exploded_table
 GROUP BY `date`, tenant_id, actor_alternateId, actor_displayName, actor_type, client_device, displayMessage, outcome_result, outcome_reason, eventType, published, transaction_id, city, country
 ORDER BY published DESC;
@@ -47,7 +47,7 @@ SELECT
   tenant_id,
   MAX(published) as most_recent_timestamp
 FROM
-  live.okta_silver_dlt
+  live.OKTA_SILVER_SYSTEM_LOGS
 GROUP BY
   source,
   tenant_id
