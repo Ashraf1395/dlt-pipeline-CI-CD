@@ -17,6 +17,7 @@ SELECT
     `date`::DATE,
     source,
     tenant_id,
+    tenant_name,
     actor_alternateId,
     actor_displayName,
     actor_type,
@@ -38,7 +39,8 @@ FROM (
         EXPLODE(FROM_JSON(get_json_object(target, '$'), 'ARRAY<STRUCT<alternateId: STRING, displayName: STRING>>')) AS target_exploded
     FROM live.OKTA_SILVER_SYSTEM_LOGS
 ) AS exploded_table
-GROUP BY `date`, `source`, tenant_id, actor_alternateId, actor_displayName, actor_type, client_device, displayMessage, outcome_result, outcome_reason, eventType, published, transaction_id, city, country
+-- GROUP BY `date`, `source`, tenant_id,tenant_name, actor_alternateId, actor_displayName, actor_type, client_device, displayMessage, outcome_result, outcome_reason, eventType, published, transaction_id, city, country
+  GROUP BY all
 ORDER BY published DESC;
 
 CREATE OR REFRESH LIVE TABLE ingestion_metadata_dlt AS
