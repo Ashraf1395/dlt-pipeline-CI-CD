@@ -43,14 +43,14 @@ FROM (
   GROUP BY all
 ORDER BY published DESC;
 
-CREATE OR REFRESH LIVE TABLE ingestion_metadata_dlt AS
-SELECT
-  'okta' as source,
-  tenant_id,
-  MAX(published) as most_recent_timestamp
-FROM
-  live.OKTA_SILVER_SYSTEM_LOGS
-GROUP BY
-  source,
-  tenant_id
+-- CREATE OR REFRESH LIVE TABLE ingestion_metadata_dlt AS
+-- SELECT
+--   'okta' as source,
+--   tenant_id,
+--   MAX(published) as most_recent_timestamp
+-- FROM
+--   live.OKTA_SILVER_SYSTEM_LOGS
+-- GROUP BY
+--   source,
+--   tenant_id
 
